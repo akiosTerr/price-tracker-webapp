@@ -1,29 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import { Items } from '../App';
-import { title } from 'process';
+import CardArray from './cardArray';
 
-const ProductsController: Function = (props: Items): JSX.Element[] => {
+const ProductsController: Function = ({ items }: Items): JSX.Element[] => {
 	const [productSections, setProductSections] = useState<string[]>([]);
 
-	const setTitles = () => {
-		const urls = props.items.map((item) => {
-			return item.link;
-		});
+	useEffect(() => {
+		setTitles();
+	}, [items]);
 
-		const titles = urls.map((url) => {
-			const title = url.match(/(?<=\.)[\w.]+/);
-			if (title) {
-				return title[0];
-			}
+	const setTitles = () => {
+		const url_id = items.map((item) => {
+			return {
+				link: item.link,
+				id: item.id,
+			};
+		});
+		console.log(url_id);
+
+		const titles = url_id.map((url) => {
+			const title = url.link.match(/(?<=\.)[\w.]+/);
 			return String(title);
 		});
 
 		setProductSections(titles);
 	};
-
-	useEffect(() => {
-		setTitles();
-	}, []);
 
 	return productSections.map((urls) => <h1>{urls}</h1>);
 };

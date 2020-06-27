@@ -2,15 +2,15 @@ import React from 'react';
 import Item from './item';
 import { Items } from '../App';
 
-const CardArray: Function = (props: Items): JSX.Element => {
+const CardArray: Function = ({ items }: Items): JSX.Element => {
 	return (
 		<div className='product-section'>
 			<hr />
-			<h2>Americanas.com.br</h2>
+			<h2>americanas.com.br</h2>
 			<hr />
 			<div className='product-list'>
-				{props.items.map((item) => (
-					<Item data={item} />
+				{items.map((item) => (
+					<Item key={item.id} data={item} />
 				))}
 			</div>
 		</div>
