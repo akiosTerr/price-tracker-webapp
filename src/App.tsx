@@ -7,8 +7,8 @@ import './App.css';
 export interface ItemT {
 	id: number;
 	title: string;
-	current_pricetag: number;
-	previous_pricetag?: number;
+	current_pricetag: string;
+	previous_pricetag?: string;
 	link: string;
 	domain: string;
 	imageURL: string;

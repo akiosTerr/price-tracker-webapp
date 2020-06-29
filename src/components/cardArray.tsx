@@ -13,7 +13,7 @@ const CardArray: Function = (props: any): JSX.Element => {
 			<hr />
 			<div className='product-list'>
 				{items.map((item) => (
-					<Item key={item.id} data={item} />
+					<Item key={item.id} item={item} />
 				))}
 			</div>
 		</div>
