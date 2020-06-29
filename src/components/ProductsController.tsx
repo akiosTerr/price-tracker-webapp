@@ -1,32 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import { Items } from '../App';
 import CardArray from './cardArray';
+import { groupBy } from '../utils/utils';
 
 const ProductsController: Function = ({ items }: Items): JSX.Element[] => {
-	const [productSections, setProductSections] = useState<string[]>([]);
+	const [productSections, setProductSections] = useState<object[]>([]);
+	const [domains, setDomains] = useState<string[]>([]);
 
 	useEffect(() => {
 		setTitles();
 	}, [items]);
 
 	const setTitles = () => {
-		const url_id = items.map((item) => {
-			return {
-				link: item.link,
-				id: item.id,
-			};
+		if (items.length < 1) {
+			return;
+		}
+		const groups = groupBy(items, 'domain');
+		const stringDomains = Object.keys(groups);
+		const grpArray = stringDomains.map((domain) => {
+			return [...groups[domain]];
 		});
-		console.log(url_id);
-
-		const titles = url_id.map((url) => {
-			const title = url.link.match(/(?<=\.)[\w.]+/);
-			return String(title);
-		});
-
-		setProductSections(titles);
+		setDomains(stringDomains);
+		setProductSections(grpArray);
 	};
 
-	return productSections.map((urls) => <h1>{urls}</h1>);
+	return productSections.map((items, i) => (
+		<CardArray key={i} domain={domains[i]} items={items} />
+	));
 };
 
 export default ProductsController;

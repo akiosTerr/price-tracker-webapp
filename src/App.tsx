@@ -10,6 +10,7 @@ export interface ItemT {
 	current_pricetag: number;
 	previous_pricetag?: number;
 	link: string;
+	domain: string;
 	imageURL: string;
 }
 
@@ -22,8 +23,12 @@ function App() {
 	useEffect(() => {
 		api.get('products').then((res) => {
 			console.log(res);
+			const serializedItems = res.data.map((item: ItemT) => {
+				item.domain = String(item.link.match(/(?<=\.)[\w.]+/));
+				return item;
+			});
 
-			setItems(res.data);
+			setItems(serializedItems);
 		});
 	}, []);
 
@@ -36,7 +41,7 @@ function App() {
 				</button>
 			</header>
 			{/* <CardArray items={items} /> */}
-			<CardArray items={items} />
+			<ProductsController items={items} />
 		</div>
 	);
 }
