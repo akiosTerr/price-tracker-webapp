@@ -9,6 +9,14 @@ export const groupBy = (array, prop) => {
 	return groups;
 };
 
+export const getDomains = (urls) => {
+	const domains = urls.map((item) => {
+		item.domain = String(item.link.match(/(?<=\.)[\w.]+/));
+		return item;
+	});
+	return domains;
+};
+
 export const convertToFloat = (array) => {
 	const filtered = array.filter((item) => item !== undefined);
 	const values = filtered.map((value) => {

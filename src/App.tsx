@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import CardArray from './components/cardArray';
+import { getDomains } from './utils/utils';
 import api from './services/ptrackr-api';
 import ProductsController from './components/ProductsController';
 import './App.css';
@@ -23,10 +23,7 @@ function App() {
 	useEffect(() => {
 		api.get('products').then((res) => {
 			console.log(res);
-			const serializedItems = res.data.map((item: ItemT) => {
-				item.domain = String(item.link.match(/(?<=\.)[\w.]+/));
-				return item;
-			});
+			const serializedItems = getDomains(res.data);
 
 			setItems(serializedItems);
 		});
