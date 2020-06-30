@@ -9,7 +9,7 @@ const CardArray: Function = (props: any): JSX.Element => {
 	return (
 		<div className='product-section'>
 			<hr />
-			<h2>{domain}</h2>
+			<h2 className='product-section-title'>{domain}</h2>
 			<hr />
 			<div className='product-list'>
 				{items.map((item) => (

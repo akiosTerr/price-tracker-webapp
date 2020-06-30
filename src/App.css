@@ -29,6 +29,7 @@
 	padding: 10px;
 	border: none;
 	border-radius: 10px;
+	cursor: pointer;
 	align-self: center;
 	margin-right: 10px;
 }

@@ -36,11 +36,10 @@ function Item(props: Item) {
 	useEffect(() => {
 		calc();
 	}, [props]);
-	// format pricetags to include only numbers and comma
 	// adjust product-image css to be a fixed size image
 	return (
 		<div className='card'>
-			<h2>{title}</h2>
+			<p className='product-title'>{title}</p>
 			<img className='product-image' src={imageURL} alt='product' />
 			<div className='item-footer'>
 				<div className='price-section'>
