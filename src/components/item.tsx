@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { convertToFloat } from '../utils/utils';
-import './Item.css';
+import { VscLoading } from 'react-icons/vsc';
+import './component-style/Item.css';
 import { ItemT } from '../App';
 
 interface Item {
@@ -23,7 +24,7 @@ function Item(props: Item) {
 			previous_pricetag,
 		]);
 		if (current < previous) {
-			SetPriceChange('green');
+			SetPriceChange('#17ee03');
 		} else if (current === previous || previous == null) {
 			SetPriceChange('white');
 		} else {
@@ -39,7 +40,14 @@ function Item(props: Item) {
 	// adjust product-image css to be a fixed size image
 	return (
 		<div className='card'>
-			<p className='product-title'>{title}</p>
+			<div className='card-header'>
+				<span></span>
+				<p className='product-title'>{title}</p>
+				<button>
+					<VscLoading id='loadingIcon' className='spinning-anim' />
+				</button>
+			</div>
+
 			<img className='product-image' src={imageURL} alt='product' />
 			<div className='item-footer'>
 				<div className='price-section'>

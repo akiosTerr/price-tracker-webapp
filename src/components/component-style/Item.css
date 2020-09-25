@@ -1,0 +1,89 @@
+.product-section {
+	display: flex;
+	flex-direction: column;
+}
+
+.product-list {
+	margin-left: 25px;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+}
+
+.product-section-title {
+	color: rgb(255, 255, 255);
+	text-align: center;
+	padding: 5px;
+}
+
+.card {
+	background: #0e5e8d;
+	color: white;
+	margin: 5px 10px;
+}
+
+.card-header {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.card-header button {
+	background-color: inherit;
+	cursor: pointer;
+	border: none;
+}
+
+.spinning-anim {
+	animation-name: spin;
+	animation-duration: 500ms;
+	animation-iteration-count: infinite;
+	animation-timing-function: linear;
+}
+
+#loadingIcon {
+	font-size: 2em;
+	color: #14d603;
+	
+}
+
+@keyframes spin {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+.product-title {
+	font-size: 1.2em;
+	padding-bottom: 20px;
+	white-space: nowrap;
+	overflow: hidden;
+	max-width: 27ch;
+}
+
+@media only screen and (max-width: 425px) {
+	.card {
+		width: 100%;
+		margin: 5px 0;
+	}
+}
+
+.price-section p {
+	font-size: 1.2em;
+	color: #a7a7a7;
+	text-decoration: line-through;
+}
+
+.product-image {
+	max-width: 150px;
+	height: 150px;
+}
+
+.item-footer {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+}
