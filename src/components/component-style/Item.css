@@ -34,6 +34,11 @@
 	border: none;
 }
 
+.card-header button:focus{
+	border: none;
+	outline: none;
+}
+
 .spinning-anim {
 	animation-name: spin;
 	animation-duration: 500ms;

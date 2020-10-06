@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Items } from '../App';
+import { Items, ItemT } from '../App';
 import CardArray from './cardArray';
 import { groupBy } from '../utils/utils';
 
-const ProductsController: Function = ({ items }: Items): JSX.Element[] => {
+const ProductsController = (props: Items) => {
 	const [productSections, setProductSections] = useState<object[]>([]);
 	const [domains, setDomains] = useState<string[]>([]);
+	const items = props.items;
 
 	useEffect(() => {
 		setTitles();
@@ -23,10 +24,10 @@ const ProductsController: Function = ({ items }: Items): JSX.Element[] => {
 		setDomains(stringDomains);
 		setProductSections(grpArray);
 	};
-
-	return productSections.map((items, i) => (
-		<CardArray key={i} domain={domains[i]} items={items} />
+	const productElements = productSections.map((itemdatalist, i) => (
+		<CardArray key={i} domain={domains[i]} itemdata={itemdatalist as ItemT[]} />
 	));
+	return <>{productElements}</>;
 };
 
 export default ProductsController;

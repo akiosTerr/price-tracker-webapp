@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { getDomains } from './utils/utils';
+import { BrowserRouter, Route } from 'react-router-dom';
 import api from './services/ptrackr-api';
 import ProductsController from './components/ProductsController';
+import Login from './components/login';
 import './App.css';
+import Header from './components/header';
 
 export interface ItemT {
 	id: number;
@@ -24,21 +27,21 @@ function App() {
 		api.get('products').then((res) => {
 			console.log(res);
 			const serializedItems = getDomains(res.data);
-
 			setItems(serializedItems);
 		});
 	}, []);
 
 	return (
 		<div className='App'>
-			<header className='App-header'>
-				<h1 className='Title'>Price Tracker</h1>
-				<button className='header-button'>
-					<p>ADD PRODUCT</p>
-				</button>
-			</header>
-			{/* <CardArray items={items} /> */}
-			<ProductsController items={items} />
+			<BrowserRouter>
+				<Header />
+				<Route
+					exact
+					path='/'
+					render={() => <ProductsController items={items} />}
+				/>
+				<Route path='/login' component={Login} />
+			</BrowserRouter>
 		</div>
 	);
 }
