@@ -20,9 +20,33 @@
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
+	align-items: center;
 	font-size: calc(3px + 2vmin);
 	color: white;
 }
+
+.side-header {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+}
+
+.notificationbell-container{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	margin: 0px 20px;
+}
+
+.notificationbell-container p {
+	font-size: 0.7em;
+	align-self: start;
+	color: #ff5100;
+	font-weight: 600;
+}
+
 
 .header-button {
 	background: rgb(46, 189, 194);
@@ -37,6 +61,12 @@
 .header-button p {
 	color: #fff;
 	font-size: 1.5em;
+}
+
+#notification-bell {
+	align-self: center;
+	font-size: 1.5em;
+	color: rgb(15, 194, 15);
 }
 
 .product-list {

@@ -17,9 +17,11 @@
 }
 
 .card {
-	background: #0e5e8d;
+	background: #08610c;
 	color: white;
 	margin: 5px 10px;
+	padding: 10px;
+	border-radius: 20px;
 }
 
 .card-header {
@@ -48,8 +50,12 @@
 
 #loadingIcon {
 	font-size: 2em;
-	color: #14d603;
-	
+	color: #14d603;	
+}
+
+#externalLinkIcon {
+	font-size: 2em;
+	color: darkblue;
 }
 
 @keyframes spin {
@@ -92,3 +98,4 @@
 	flex-direction: row;
 	justify-content: space-around;
 }
+
