@@ -9,7 +9,17 @@ export const groupBy = (array, prop) => {
 	return groups;
 };
 
-export const getDomains = (urls) => {
+export const getDate = () => {
+	const today = new Date();
+	const dd = String(today.getDate()).padStart(2, '0');
+	const mm = String(today.getMonth() + 1).padStart(2, '0');
+	const yyyy = today.getFullYear();
+
+	const fdate = mm + '/' + dd + '/' + yyyy;
+	return fdate;
+};
+
+export const getFormatedDomains = (urls) => {
 	const domains = urls.map((item) => {
 		item.domain = String(item.link.match(/(?<=\.)[\w.]+/));
 		return item;

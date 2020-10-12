@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { convertToFloat } from '../utils/utils';
+import { convertToFloat, getDate } from '../utils/utils';
 import api from '../services/ptrackr-api';
 import { VscLoading } from 'react-icons/vsc';
 import { FiExternalLink } from 'react-icons/fi';
 import './component-style/Item.css';
 import { ItemT } from '../App';
+import { validateResponse, ValidatedResponse } from './utils/utils';
 
 interface Item {
 	item: ItemT;
@@ -21,6 +22,7 @@ function Item(props: Item) {
 	} = props.item;
 	const [currentPt, setCurrentPT] = useState<string>();
 	const [previousPt, setPreviousPT] = useState<string>();
+	const [updatedAt, setUpdatedAt] = useState<string>(getDate());
 	const [priceChange, SetPriceChange] = useState<string>();
 	const [animState, setAnimState] = useState<string>();
 	const [updateStatus, setUpdateStatus] = useState<boolean>(false);
@@ -29,36 +31,46 @@ function Item(props: Item) {
 		color: priceChange,
 	};
 
-	const UpdateItem = () => {
+	const endUpdate = () => {
+		setAnimState('');
+		setUpdateStatus(false);
+	};
+
+	const startUpdate = () => {
 		if (updateStatus) {
 			console.log('negated');
 			return;
 		} else {
 			setAnimState('spinning-anim');
+			setUpdateStatus(true);
 		}
-		setUpdateStatus(true);
+	};
+
+	const updateData = (response: ValidatedResponse) => {
+		if (response.update) {
+			setCurrentPT(response.newPrice);
+			setPreviousPT(response.lastPrice);
+		} else {
+			if (response.error !== undefined) {
+				console.log('error found');
+				console.log(response.error);
+			} else {
+				console.log('no price changes');
+			}
+		}
+		setUpdatedAt(getDate());
+
+		endUpdate();
+	};
+
+	const getItemData = () => {
+		startUpdate();
 		api
 			.get(`/products/${id}/getPrice`)
 			.then((res) => {
-				const response = {
-					type: 'response',
-					data: res.data,
-				};
-				console.log(response);
 				const data = res.data;
-
-				if (data.priceChange === true) {
-					console.log('new price received');
-					setCurrentPT(data.newPrice);
-					if (data.lastPrice) {
-						setPreviousPT(data.lastPrice);
-					}
-				} else {
-					console.log('no price changes');
-					console.log(data);
-				}
-				setAnimState('');
-				setUpdateStatus(false);
+				const response = validateResponse(data);
+				updateData(response);
 			})
 			.catch((err) => {
 				console.log(err);
@@ -66,39 +78,36 @@ function Item(props: Item) {
 			});
 	};
 
-	const calcPriceDifference = () => {
-		const [current, previous] = convertToFloat([
-			current_pricetag,
-			previous_pricetag,
-		]);
-		if (current < previous) {
-			SetPriceChange('#17ee03');
-		} else if (current === previous || previous == null) {
-			SetPriceChange('white');
-		} else {
-			SetPriceChange('red');
-		}
-		setCurrentPT(current);
-		setPreviousPT(previous);
-	};
-
 	useEffect(() => {
+		const calcPriceDifference = () => {
+			const [current, previous] = convertToFloat([
+				current_pricetag,
+				previous_pricetag,
+			]);
+			if (current < previous) {
+				SetPriceChange('#17ee03');
+			} else if (current === previous || previous == null) {
+				SetPriceChange('white');
+			} else {
+				SetPriceChange('red');
+			}
+			setCurrentPT(current);
+			setPreviousPT(previous);
+		};
 		calcPriceDifference();
-	}, [props]);
-
-	const goToLink = () => {
-		console.log('gotolink');
-	};
+	}, [current_pricetag, previous_pricetag]);
 
 	// todo: adjust product-image css to be a fixed size image
+
+	// todo: update date of price update
 	return (
 		<div className='card'>
 			<div className='card-header'>
-				<a target='_blank' href={link}>
+				<a target='_blank' rel='noopener noreferrer' href={link}>
 					<FiExternalLink id='externalLinkIcon' />
 				</a>
 				<p className='product-title'>{title}</p>
-				<button onClick={UpdateItem}>
+				<button onClick={getItemData}>
 					<VscLoading id='loadingIcon' className={`${animState}`} />
 				</button>
 			</div>
@@ -106,10 +115,10 @@ function Item(props: Item) {
 			<img className='product-image' src={imageURL} alt='product' />
 			<div className='item-footer'>
 				<div className='price-section'>
-					<p>R$ {previousPt}</p>
+					{previousPt !== undefined ? <p>R${previousPt}</p> : <></>}
 					<h2 style={ptStyle}>R$ {currentPt}</h2>
 				</div>
-				<p>updated in: 10/08/2020</p>
+				{/* <p>{`updated in: ${updatedAt}`}</p> */}
 			</div>
 		</div>
 	);

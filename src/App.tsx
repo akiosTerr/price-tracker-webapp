@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getDomains } from './utils/utils';
+import { getFormatedDomains } from './utils/utils';
 import { BrowserRouter, Route } from 'react-router-dom';
 import api from './services/ptrackr-api';
 import ProductsController from './components/ProductsController';
@@ -26,7 +26,7 @@ function App() {
 	useEffect(() => {
 		api.get('products').then((res) => {
 			console.log(res);
-			const serializedItems = getDomains(res.data);
+			const serializedItems = getFormatedDomains(res.data);
 			setItems(serializedItems);
 		});
 	}, []);
