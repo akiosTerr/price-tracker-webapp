@@ -20,8 +20,9 @@ function Item(props: Item) {
 		imageURL,
 		link,
 	} = props.item;
+
 	const [currentPt, setCurrentPT] = useState<string>();
-	const [previousPt, setPreviousPT] = useState<string>();
+	const [previousPt, setPreviousPT] = useState<string | undefined>();
 	const [updatedAt, setUpdatedAt] = useState<string>(getDate());
 	const [priceChange, SetPriceChange] = useState<string>();
 	const [animState, setAnimState] = useState<string>();
@@ -80,22 +81,21 @@ function Item(props: Item) {
 
 	useEffect(() => {
 		const calcPriceDifference = () => {
-			const [current, previous] = convertToFloat([
-				current_pricetag,
-				previous_pricetag,
-			]);
-			if (current < previous) {
-				SetPriceChange('#17ee03');
-			} else if (current === previous || previous == null) {
+			if (currentPt === previousPt || previousPt == null) {
 				SetPriceChange('white');
+			} else if (current_pricetag < previousPt) {
+				SetPriceChange('#17ee03');
 			} else {
 				SetPriceChange('red');
 			}
-			setCurrentPT(current);
-			setPreviousPT(previous);
 		};
 		calcPriceDifference();
-	}, [current_pricetag, previous_pricetag]);
+	}, [currentPt, previousPt]);
+
+	useEffect(() => {
+		setCurrentPT(current_pricetag);
+		setPreviousPT(previous_pricetag);
+	}, []);
 
 	// todo: adjust product-image css to be a fixed size image
 
