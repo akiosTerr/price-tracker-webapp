@@ -15,6 +15,7 @@ export interface ItemT {
 	link: string;
 	domain: string;
 	imageURL: string;
+	createdAt: string;
 }
 
 export interface Items {
@@ -25,8 +26,9 @@ function App() {
 	const [items, setItems] = useState<ItemT[]>([]);
 	useEffect(() => {
 		api.get('products').then((res) => {
-			console.log(res);
+			console.log(res.data);
 			const serializedItems = getFormatedDomains(res.data);
+
 			setItems(serializedItems);
 		});
 	}, []);

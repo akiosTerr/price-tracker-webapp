@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { convertToFloat, getDate } from '../utils/utils';
 import api from '../services/ptrackr-api';
 import { VscLoading } from 'react-icons/vsc';
 import { FiExternalLink } from 'react-icons/fi';
 import './component-style/Item.css';
 import { ItemT } from '../App';
-import { validateResponse, ValidatedResponse } from './utils/utils';
+import { Response } from './utils/utils';
 
 interface Item {
 	item: ItemT;
@@ -19,11 +18,12 @@ function Item(props: Item) {
 		previous_pricetag,
 		imageURL,
 		link,
+		createdAt,
 	} = props.item;
 
 	const [currentPt, setCurrentPT] = useState<string>();
 	const [previousPt, setPreviousPT] = useState<string | undefined>();
-	const [updatedAt, setUpdatedAt] = useState<string>(getDate());
+	const [updatedAt, setUpdatedAt] = useState<string>(createdAt);
 	const [priceChange, SetPriceChange] = useState<string>();
 	const [animState, setAnimState] = useState<string>();
 	const [updateStatus, setUpdateStatus] = useState<boolean>(false);
@@ -47,20 +47,19 @@ function Item(props: Item) {
 		}
 	};
 
-	const updateData = (response: ValidatedResponse) => {
-		if (response.update) {
+	const updateData = (response: Response) => {
+		if (response.priceChange) {
 			setCurrentPT(response.newPrice);
 			setPreviousPT(response.lastPrice);
+			setUpdatedAt(response.createdAt);
 		} else {
-			if (response.error !== undefined) {
+			if (response.status === 0) {
 				console.log('error found');
-				console.log(response.error);
+				console.log(response.errorData);
 			} else {
 				console.log('no price changes');
 			}
 		}
-		setUpdatedAt(getDate());
-
 		endUpdate();
 	};
 
@@ -70,8 +69,7 @@ function Item(props: Item) {
 			.get(`/products/${id}/getPrice`)
 			.then((res) => {
 				const data = res.data;
-				const response = validateResponse(data);
-				updateData(response);
+				updateData(data);
 			})
 			.catch((err) => {
 				console.log(err);
@@ -118,7 +116,7 @@ function Item(props: Item) {
 					{previousPt !== undefined ? <p>R${previousPt}</p> : <></>}
 					<h2 style={ptStyle}>R$ {currentPt}</h2>
 				</div>
-				{/* <p>{`updated in: ${updatedAt}`}</p> */}
+				<p>{updatedAt}</p>
 			</div>
 		</div>
 	);
