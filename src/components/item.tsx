@@ -4,7 +4,9 @@ import { VscLoading } from 'react-icons/vsc';
 import { FiExternalLink } from 'react-icons/fi';
 import './component-style/Item.css';
 import { ItemT } from '../App';
-import { Response } from './utils/utils';
+import { Response } from './constants/interface';
+import { dateTimeFormat } from './utils/utils';
+import { create } from 'lodash';
 
 interface Item {
 	item: ItemT;
@@ -23,7 +25,7 @@ function Item(props: Item) {
 
 	const [currentPt, setCurrentPT] = useState<string>();
 	const [previousPt, setPreviousPT] = useState<string | undefined>();
-	const [updatedAt, setUpdatedAt] = useState<string>(createdAt);
+	const [updatedAt, setUpdatedAt] = useState<string>();
 	const [priceChange, SetPriceChange] = useState<string>();
 	const [animState, setAnimState] = useState<string>();
 	const [updateStatus, setUpdateStatus] = useState<boolean>(false);
@@ -51,7 +53,6 @@ function Item(props: Item) {
 		if (response.priceChange) {
 			setCurrentPT(response.newPrice);
 			setPreviousPT(response.lastPrice);
-			setUpdatedAt(response.createdAt);
 		} else {
 			if (response.status === 0) {
 				console.log('error found');
@@ -60,6 +61,8 @@ function Item(props: Item) {
 				console.log('no price changes');
 			}
 		}
+		setUpdatedAt(dateTimeFormat(response.createdAt));
+
 		endUpdate();
 	};
 
@@ -93,6 +96,7 @@ function Item(props: Item) {
 	useEffect(() => {
 		setCurrentPT(current_pricetag);
 		setPreviousPT(previous_pricetag);
+		setUpdatedAt(createdAt);
 	}, []);
 
 	// todo: adjust product-image css to be a fixed size image
