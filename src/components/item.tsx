@@ -5,8 +5,7 @@ import { FiExternalLink } from 'react-icons/fi';
 import './component-style/Item.css';
 import { ItemT } from '../App';
 import { Response } from './constants/interface';
-import { dateTimeFormat } from './utils/utils';
-import { create } from 'lodash';
+import { dateTimeFormat, ifundefined } from './utils/utils';
 
 interface Item {
 	item: ItemT;
@@ -23,8 +22,8 @@ function Item(props: Item) {
 		createdAt,
 	} = props.item;
 
-	const [currentPt, setCurrentPT] = useState<string>();
-	const [previousPt, setPreviousPT] = useState<string | undefined>();
+	const [currentPt, setCurrentPT] = useState<number | undefined>();
+	const [previousPt, setPreviousPT] = useState<number | undefined>();
 	const [updatedAt, setUpdatedAt] = useState<string>();
 	const [priceChange, SetPriceChange] = useState<string>();
 	const [animState, setAnimState] = useState<string>();
@@ -46,13 +45,13 @@ function Item(props: Item) {
 		} else {
 			setAnimState('spinning-anim');
 			setUpdateStatus(true);
+			getItemData();
 		}
 	};
 
 	const updateData = (response: Response) => {
 		if (response.priceChange) {
-			setCurrentPT(response.newPrice);
-			setPreviousPT(response.lastPrice);
+			priceUpdate(response.newPrice, response.lastPrice);
 		} else {
 			if (response.status === 0) {
 				console.log('error found');
@@ -61,13 +60,11 @@ function Item(props: Item) {
 				console.log('no price changes');
 			}
 		}
-		setUpdatedAt(dateTimeFormat(response.createdAt));
-
+		dateUpdate(response.createdAt);
 		endUpdate();
 	};
 
 	const getItemData = () => {
-		startUpdate();
 		api
 			.get(`/products/${id}/getPrice`)
 			.then((res) => {
@@ -80,11 +77,34 @@ function Item(props: Item) {
 			});
 	};
 
+	const priceUpdate = (current: string, previous: string | undefined) => {
+		setCurrentPT(
+			ifundefined(
+				current,
+				() => Number(current),
+				() => undefined
+			)()
+		);
+		setPreviousPT(
+			ifundefined(
+				previous,
+				() => Number(previous),
+				() => undefined
+			)()
+		);
+	};
+
+	const dateUpdate = (date: string) => {
+		const fdate = ifundefined(date, dateTimeFormat(date), () => undefined);
+		setUpdatedAt(fdate());
+	};
+
 	useEffect(() => {
 		const calcPriceDifference = () => {
-			if (currentPt === previousPt || previousPt == null) {
+			const pricetag = Number(currentPt);
+			if (pricetag === previousPt || previousPt == null) {
 				SetPriceChange('white');
-			} else if (current_pricetag < previousPt) {
+			} else if (pricetag < previousPt) {
 				SetPriceChange('#17ee03');
 			} else {
 				SetPriceChange('red');
@@ -94,14 +114,12 @@ function Item(props: Item) {
 	}, [currentPt, previousPt]);
 
 	useEffect(() => {
-		setCurrentPT(current_pricetag);
-		setPreviousPT(previous_pricetag);
-		setUpdatedAt(createdAt);
+		priceUpdate(current_pricetag, previous_pricetag);
+		dateUpdate(createdAt);
 	}, []);
 
 	// todo: adjust product-image css to be a fixed size image
 
-	// todo: update date of price update
 	return (
 		<div className='card'>
 			<div className='card-header'>
@@ -109,7 +127,7 @@ function Item(props: Item) {
 					<FiExternalLink id='externalLinkIcon' />
 				</a>
 				<p className='product-title'>{title}</p>
-				<button onClick={getItemData}>
+				<button onClick={startUpdate}>
 					<VscLoading id='loadingIcon' className={`${animState}`} />
 				</button>
 			</div>
@@ -118,7 +136,11 @@ function Item(props: Item) {
 			<div className='item-footer'>
 				<div className='price-section'>
 					{previousPt !== undefined ? <p>R${previousPt}</p> : <></>}
-					<h2 style={ptStyle}>R$ {currentPt}</h2>
+					{currentPt !== undefined ? (
+						<h2 style={ptStyle}>R$ {currentPt}</h2>
+					) : (
+						<span>price unavailable</span>
+					)}
 				</div>
 				<p>{updatedAt}</p>
 			</div>
