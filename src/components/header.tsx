@@ -1,11 +1,19 @@
-import React from 'react';
+import React, { useReducer } from 'react';
 import { MdNotifications } from 'react-icons/md';
 import AddItem from './addItem';
+import { reducer, initialVisbility, init } from './actions/ToggleAddItem';
 
 const Header = () => {
-	const toogleAddItem = () => {
-		console.log('toogle add item on header');
+	const [visibilityState, dispatch] = useReducer(
+		reducer,
+		initialVisbility,
+		init
+	);
+
+	const toggle = () => {
+		dispatch({ type: 'toggle' });
 	};
+
 	return (
 		<header className='App-header'>
 			<h1 className='Title'>Price Tracker</h1>
@@ -14,10 +22,10 @@ const Header = () => {
 					<p>3</p>
 					<MdNotifications id='notification-bell'></MdNotifications>
 				</div>
-				<button onClick={toogleAddItem} className='header-button'>
+				<button onClick={toggle} className='header-button'>
 					<p>ADD PRODUCT</p>
 				</button>
-				<AddItem />
+				<AddItem visibility={visibilityState.visibility} />
 			</div>
 		</header>
 	);
