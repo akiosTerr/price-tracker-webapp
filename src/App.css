@@ -1,3 +1,18 @@
+:root {
+	--main-dark: #243352;
+	--main-light: #4a6aaa;
+	--light-cyan: #58e2e7;
+	--green-cyan: #31acac;
+	--green-neon: #05d105;
+	--card-bg: #0b6b6b;
+	--card-title: #ffffff;
+	--text-white: #e2e6ec;
+	--cyber-purple: #311d69;
+	--cyber-dark: #201344;
+	--button-text: #000d16;
+	--orange-neon: #fa7c06;
+}
+
 * {
 	margin: 0;
 	padding: 0;
@@ -5,8 +20,8 @@
 
 .App {
 	text-align: center;
-	background: #282c34;
-	color: #fff;
+	background: var(--main-dark);
+	color: var(--text-white);
 	min-height: 100vh;
 }
 
@@ -16,13 +31,12 @@
 
 /* vmin vh */
 .App-header {
-	background-color: #35518a;
+	background-color: var(--main-dark);
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
 	align-items: center;
 	font-size: calc(3px + 2vmin);
-	color: white;
 }
 
 .side-header {
@@ -40,33 +54,37 @@
 	margin: 0px 20px;
 }
 
+
+#notification-bell {
+	align-self: center;
+	font-size: 1.5em;
+	color: var(--green-cyan);
+}
+
 .notificationbell-container p {
 	font-size: 0.7em;
 	align-self: start;
-	color: #ff5100;
+	color: var(--light-cyan);
 	font-weight: 600;
 }
 
-
 .header-button {
-	background: rgb(46, 189, 194);
+	background: var(--cyber-purple);
 	padding: 10px;
-	border: none;
-	border-radius: 10px;
+	border: 1px solid var(--text-white);
 	cursor: pointer;
 	align-self: center;
 	margin-right: 10px;
 }
 
 .header-button p {
-	color: #fff;
+	color: var(--text-white);
 	font-size: 1.5em;
+	font-weight: bold;
 }
 
-#notification-bell {
-	align-self: center;
-	font-size: 1.5em;
-	color: rgb(15, 194, 15);
+.header-button:focus {
+	outline: none;
 }
 
 .product-list {

@@ -6,6 +6,7 @@ import './component-style/Item.css';
 import { ItemT } from '../App';
 import { Response } from './constants/interface';
 import { dateTimeFormat, ifundefined } from './utils/utils';
+import Colors from './constants/colors';
 
 interface Item {
 	item: ItemT;
@@ -103,11 +104,11 @@ function Item(props: Item) {
 		const calcPriceDifference = () => {
 			const pricetag = Number(currentPt);
 			if (pricetag === previousPt || previousPt == null) {
-				SetPriceChange('white');
+				SetPriceChange(Colors.white);
 			} else if (pricetag < previousPt) {
-				SetPriceChange('#17ee03');
+				SetPriceChange(Colors.green);
 			} else {
-				SetPriceChange('red');
+				SetPriceChange(Colors.red);
 			}
 		};
 		calcPriceDifference();
@@ -116,23 +117,24 @@ function Item(props: Item) {
 	useEffect(() => {
 		priceUpdate(current_pricetag, previous_pricetag);
 		dateUpdate(createdAt);
-	}, []);
+	}, [createdAt, current_pricetag, previous_pricetag]);
 
 	// todo: adjust product-image css to be a fixed size image
 
 	return (
 		<div className='card'>
 			<div className='card-header'>
+				<p className='product-title'>{title}</p>
+			</div>
+			<div className='card-body'>
 				<a target='_blank' rel='noopener noreferrer' href={link}>
 					<FiExternalLink id='externalLinkIcon' />
 				</a>
-				<p className='product-title'>{title}</p>
+				<img className='product-image' src={imageURL} alt='product' />
 				<button onClick={startUpdate}>
 					<VscLoading id='loadingIcon' className={`${animState}`} />
 				</button>
 			</div>
-
-			<img className='product-image' src={imageURL} alt='product' />
 			<div className='item-footer'>
 				<div className='price-section'>
 					{previousPt !== undefined ? <p>R${previousPt}</p> : <></>}

@@ -23,7 +23,7 @@ const Header = () => {
 					<MdNotifications id='notification-bell'></MdNotifications>
 				</div>
 				<button onClick={toggle} className='header-button'>
-					<p>ADD PRODUCT</p>
+					<p>ADD ITEM</p>
 				</button>
 				<AddItem visibility={visibilityState.visibility} />
 			</div>

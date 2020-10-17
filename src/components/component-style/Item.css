@@ -4,10 +4,18 @@
 }
 
 .product-list {
-	margin-left: 25px;
+	margin-left: 10px;
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
+}
+
+.product-section:nth-child(odd) {
+	background: linear-gradient(var(--cyber-purple),var(--main-light)) ;
+}
+
+.product-section:nth-child(even) {
+	background: linear-gradient(var(--green-cyan),var(--main-dark)) ;
 }
 
 .product-section-title {
@@ -17,26 +25,42 @@
 }
 
 .card {
-	background: #08610c;
-	color: white;
+	display: flex;
+	flex-direction: column;
+	background: var(--card-bg);
+	color: var(--text-white);
 	margin: 5px 10px;
 	padding: 10px;
-	border-radius: 20px;
+	border-radius: 5px;
 }
 
-.card-header {
+.card-body {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
+	align-items: center;
 }
 
-.card-header button {
+.card-header {
+	color: var(--card-title);
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	align-items: center;
+}
+
+.card-body button {
 	background-color: inherit;
 	cursor: pointer;
 	border: none;
 }
 
-.card-header button:focus{
+.card-body a:focus {
+	border: none;
+	outline: none;
+}
+
+.card-body button:focus{
 	border: none;
 	outline: none;
 }
@@ -50,7 +74,7 @@
 
 #loadingIcon {
 	font-size: 2em;
-	color: #14d603;	
+	color: var(--light-cyan);	
 }
 
 #externalLinkIcon {

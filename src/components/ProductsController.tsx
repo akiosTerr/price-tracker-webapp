@@ -8,10 +8,7 @@ const ProductsController = (props: Items) => {
 	const [domains, setDomains] = useState<string[]>([]);
 	const items = props.items;
 
-	useEffect(() => {
-		setTitles();
-	}, [items]);
-
+	// research useCallback hook & exhaustive-deps
 	const setTitles = () => {
 		if (items.length < 1) {
 			return;
@@ -24,6 +21,11 @@ const ProductsController = (props: Items) => {
 		setDomains(stringDomains);
 		setProductSections(grpArray);
 	};
+
+	useEffect(() => {
+		setTitles();
+	}, [items]);
+
 	const productElements = productSections.map((itemdatalist, i) => (
 		<CardArray key={i} domain={domains[i]} itemdata={itemdatalist as ItemT[]} />
 	));

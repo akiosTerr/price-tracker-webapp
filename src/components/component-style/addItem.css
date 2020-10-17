@@ -1,11 +1,32 @@
 .addItemContainer{
     position: absolute;
-    top:40px;
-    background: rgb(11, 107, 107);
-    color: white;
-    padding: 10px;
-    border-radius: 10px;
+    top:50px;
+    right:1px;
+    background: var(--main-dark);
+    color: var(--text-white);
+    border: 2px solid #ddd;
+    padding: 20px;
+    height: 245px;
     display: none;
+}
+
+.submit-item {
+    cursor: pointer;
+    margin-top: 15px;
+    color: var(--light-cyan);
+    font-weight: bold;
+    background-color: inherit;
+    border: 2px solid var(--text-white);
+    padding: 8px;
+}
+
+.addItemForm {
+    width: 100%;
+    height: 95%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
 }
 
 .active {
